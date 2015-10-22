@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/defaults"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/davidbanham/required_env"
+	"github.com/robfig/cron"
 	"log"
 	"os"
 	"os/exec"
@@ -19,10 +20,19 @@ func main() {
 		"S3_BUCKET":             "",
 	})
 
+	if os.Getenv("CRON_STRING") != "" {
+		c := cron.New()
+		c.AddFunc(os.Getenv("CRON_STRING"), doBackup)
+		c.Start()
+		select {}
+	} else {
+		doBackup()
+	}
+}
+
+func doBackup() {
 	filename := time.Now().Format(time.RFC3339) + ".tar.gz"
 	cmd := exec.Command("rethinkdb", "dump", "-c", os.Getenv("RETHINK_LOC"), "-f", filename)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
