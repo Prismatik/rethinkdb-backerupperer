@@ -22,7 +22,10 @@ func main() {
 
 	if os.Getenv("CRON_STRING") != "" {
 		c := cron.New()
-		c.AddFunc(os.Getenv("CRON_STRING"), doBackup)
+		err := c.AddFunc(os.Getenv("CRON_STRING"), doBackup)
+		if err != nil {
+			log.Fatal(err)
+		}
 		c.Start()
 		select {}
 	} else {
