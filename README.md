@@ -38,3 +38,9 @@ Every time it succeeds, it will log something similar to:
 `2015/10/23 20:42:13 Successfully uploaded backup 2015-10-23T20:42:10+11:00.tar.gz`
 
 Any failure will exit the process with an exit code of 1
+
+### Download
+
+You can download binaries for OSX, Linux and Windows [here](https://github.com/Prismatik/rethinkdb-backerupperer/releases/latest)
+
+NB: I have not tested the Windows build. Please let me know if it works (or doesn't)
