@@ -25,6 +25,7 @@ Optional environment variables are:
 
 * SSE_KEY (In my testing, S3 barfs if this isn't 32 characters in length)
 * CRON_STRING (Normal cron times, with extras defined [here](https://godoc.org/github.com/robfig/cron))
+* AWS_REGION Defaults to us-east-1
 
 If SSE_KEY is not defined, the file will just be stored in the clear.
 If CRON_STRING is not defined, the process will just run once then exit.

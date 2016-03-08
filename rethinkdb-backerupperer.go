@@ -18,6 +18,7 @@ func main() {
 		"AWS_SECRET_ACCESS_KEY": "",
 		"RETHINK_LOC":           "",
 		"S3_BUCKET":             "",
+		"AWS_REGION":            "us-east-1",
 	})
 
 	if os.Getenv("CRON_STRING") != "" {
@@ -43,7 +44,7 @@ func doBackup() {
 		log.Fatal(err)
 	}
 
-	defaults.DefaultConfig.Region = aws.String("us-east-1")
+	defaults.DefaultConfig.Region = aws.String(os.Getenv("AWS_REGION"))
 	svc := s3.New(nil)
 
 	file, err := os.Open(filename)
