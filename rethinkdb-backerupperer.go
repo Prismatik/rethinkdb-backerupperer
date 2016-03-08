@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/defaults"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/davidbanham/required_env"
 	"github.com/robfig/cron"
@@ -18,6 +18,7 @@ func main() {
 		"AWS_SECRET_ACCESS_KEY": "",
 		"RETHINK_LOC":           "",
 		"S3_BUCKET":             "",
+		"AWS_REGION":            "us-east-1",
 	})
 
 	if os.Getenv("CRON_STRING") != "" {
@@ -43,8 +44,9 @@ func doBackup() {
 		log.Fatal(err)
 	}
 
-	defaults.DefaultConfig.Region = aws.String("us-east-1")
-	svc := s3.New(nil)
+	config := aws.NewConfig().WithRegion(os.Getenv("AWS_REGION"))
+	sess := session.New(config)
+	svc := s3.New(sess)
 
 	file, err := os.Open(filename)
 	if err != nil {
