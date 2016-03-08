@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/defaults"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/davidbanham/required_env"
 	"github.com/robfig/cron"
@@ -44,8 +44,9 @@ func doBackup() {
 		log.Fatal(err)
 	}
 
-	defaults.DefaultConfig.Region = aws.String(os.Getenv("AWS_REGION"))
-	svc := s3.New(nil)
+	config := aws.NewConfig().WithRegion(os.Getenv("AWS_REGION"))
+	sess := session.New(config)
+	svc := s3.New(sess)
 
 	file, err := os.Open(filename)
 	if err != nil {
