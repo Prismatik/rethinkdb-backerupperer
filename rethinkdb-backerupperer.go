@@ -36,6 +36,8 @@ func main() {
 func doBackup() {
 	filename := time.Now().Format(time.RFC3339) + ".tar.gz"
 	cmd := exec.Command("rethinkdb", "dump", "-c", os.Getenv("RETHINK_LOC"), "-f", filename)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
